@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Wrapping : MonoBehaviour, IUpdate
 {
-    SpriteRenderer _renderer;
+    bool _isWrappingX = false;
+    bool _isWrappingY = false;
 
-    bool isWrappingX = false;
-    bool isWrappingY = false;
+    private Camera _cam;
+
+    SpriteRenderer _renderer;
+    Plane[] _cameraFrustum;
+    PolygonCollider2D _collider;
+
 
     void OnDisable()
     {
@@ -19,31 +24,40 @@ public class Wrapping : MonoBehaviour, IUpdate
         UpdateManager.Instance.updates.Remove(this);
     }
 
+    void Awake()
+    {
+        _renderer = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<PolygonCollider2D>();
+
+    }
+
 
     void Start()
     {
         UpdateManager.Instance.updates.Add(this);
+
+        _cam = Camera.main;
     }
+
+
 
     public void IUpdate()
     {
         Wrap();
     }
 
-    private void Awake()
-    {
-        _renderer = GetComponent<SpriteRenderer>();
-    }
-
     bool CheckRenderers()
     {
-        if (_renderer.isVisible)
+        var bounds = _collider.bounds;
+        _cameraFrustum = GeometryUtility.CalculateFrustumPlanes(_cam);
+
+        if (GeometryUtility.TestPlanesAABB(_cameraFrustum, bounds))
         {
-            Debug.Log("IsVisible");
             return true;
         }
-        Debug.Log("IsNOTVisible");
+
         return false;
+
     }
 
     void Wrap()
@@ -51,27 +65,33 @@ public class Wrapping : MonoBehaviour, IUpdate
         var isVisible = CheckRenderers();
         if (isVisible)
         {
-            isWrappingX = false;
-            isWrappingY = false;
+            _isWrappingX = false;
+            _isWrappingY = false;
             return;
         }
-        if (isWrappingX && isWrappingY)
+        if (_isWrappingX && _isWrappingY)
         {
             return;
         }
         var cam = Camera.main;
         var viewportPosition = cam.WorldToViewportPoint(transform.position);
+
+
         var newPosition = transform.position;
-        if (!isWrappingX && (viewportPosition.x > 1 || viewportPosition.x < 0))
+
+
+        if (!_isWrappingX && (viewportPosition.x > 1 || viewportPosition.x < 0))
         {
             newPosition.x = -newPosition.x;
-            isWrappingX = true;
+            _isWrappingX = true;
         }
-        if (!isWrappingY && (viewportPosition.y > 1 || viewportPosition.y < 0))
+        if (!_isWrappingY && (viewportPosition.y > 1 || viewportPosition.y < 0))
         {
             newPosition.y = -newPosition.y;
-            isWrappingY = true;
+            _isWrappingY = true;
         }
         transform.position = newPosition;
+
+
     }
 }

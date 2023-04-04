@@ -11,13 +11,6 @@ public class Player : MonoBehaviour, IUpdate
 
     public Rigidbody2D Rb { get => _rb; set => _rb = value; }
 
-
-
-    void OnEnable()
-    {
-        UpdateManager.Instance.updates.Add(this);
-    }
-
     void OnDisable()
     {
         UpdateManager.Instance.updates.Remove(this);
@@ -35,6 +28,7 @@ public class Player : MonoBehaviour, IUpdate
 
     private void Start()
     {
+        UpdateManager.Instance.updates.Add(this);
         _controller = new PlayerController(_model);
 
         _model.stats = new ModelStats
@@ -65,9 +59,6 @@ public class Player : MonoBehaviour, IUpdate
         {
             _controller.ResetRotateTimer();
         }
-
-
-        Debug.Log(Rb.velocity);
 
     }
 }
