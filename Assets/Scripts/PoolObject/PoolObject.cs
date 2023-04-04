@@ -9,11 +9,11 @@ public class PoolObject<T>
     List<T> pool = new List<T>();
     Action<T> _startMethod;
     Action<T> _sleepMethod;
-    Func<T> _factory;
+    Func<T, T> _factory;
 
     int _init;
 
-    public PoolObject(int init, T prefab, Func<T> factory, Action<T> startMethod, Action<T> sleepMethod)
+    public PoolObject(int init, T prefab, Func<T, T> factory, Action<T> startMethod, Action<T> sleepMethod, bool initialize = true)
     {
         _prefab = prefab;
         _startMethod = startMethod;
@@ -21,14 +21,15 @@ public class PoolObject<T>
         _sleepMethod = sleepMethod;
         _init = init;
 
-        Initialize();
+        if (initialize)
+            Initialize();
     }
 
     void Initialize()
     {
         for (int i = 0; i < _init; i++)
         {
-            T obj = _factory();
+            T obj = _factory(_prefab);
             _sleepMethod(obj);
             pool.Add(obj);
 
@@ -46,7 +47,7 @@ public class PoolObject<T>
         }
         else
         {
-            T newObj = _factory();
+            T newObj = _factory(_prefab);
             pool.Add(newObj);
             _startMethod(newObj);
             return newObj;

@@ -6,10 +6,11 @@ public class Player : MonoBehaviour, IUpdate
 {
     PlayerModel _model = new PlayerModel();
     PlayerController _controller;
-
     Rigidbody2D _rb;
 
+
     public Rigidbody2D Rb { get => _rb; set => _rb = value; }
+    public PlayerModel Model { get => _model; set => _model = value; }
 
     void OnDisable()
     {
@@ -37,10 +38,16 @@ public class Player : MonoBehaviour, IUpdate
             turnSpeed = 100f,
             rotationAngle = 1f,
             maxSpeed = 2f,
+            shootCooldown = 1f
         };
+
+
     }
     public void IUpdate()
     {
+        _model.BulletSpawnPoint = transform.position + transform.up;
+
+        _controller.CoolDown();
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -60,5 +67,16 @@ public class Player : MonoBehaviour, IUpdate
             _controller.ResetRotateTimer();
         }
 
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            _controller.Shoot(this);
+        }
+
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(_model.BulletSpawnPoint, Vector3.one / 2);
     }
 }

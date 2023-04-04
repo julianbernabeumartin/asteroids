@@ -55,4 +55,20 @@ public class PlayerController
     {
         _model.TimeToRotate = 0;
     }
+
+    public void Shoot(Player player)
+    {
+        if (_model.ShootCoolDown <= 0)
+        {
+            var obj = PoolManager.ShipBulletPool.Spawn();
+            _model.ShootCoolDown = _model.stats.shootCooldown;
+        }
+
+    }
+
+    public void CoolDown()
+    {
+        if (_model.ShootCoolDown > 0)
+            _model.ShootCoolDown -= Time.deltaTime;
+    }
 }
