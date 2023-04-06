@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerModel
 {
     public ModelStats stats;
+    public bool shoot;
 
     float _timeToRotate = 0;
     float _rotation = 0;

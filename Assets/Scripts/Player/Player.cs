@@ -8,13 +8,13 @@ public class Player : MonoBehaviour, IUpdate
     PlayerController _controller;
     Rigidbody2D _rb;
 
-
     public Rigidbody2D Rb { get => _rb; set => _rb = value; }
     public PlayerModel Model { get => _model; set => _model = value; }
 
     void OnDisable()
     {
         UpdateManager.Instance.updates.Remove(this);
+
     }
 
     void OnDestroy()
@@ -38,9 +38,8 @@ public class Player : MonoBehaviour, IUpdate
             turnSpeed = 100f,
             rotationAngle = 1f,
             maxSpeed = 2f,
-            shootCooldown = 1f
+            shootCooldown = 0.3f
         };
-
 
     }
     public void IUpdate()
@@ -48,6 +47,7 @@ public class Player : MonoBehaviour, IUpdate
         _model.BulletSpawnPoint = transform.position + transform.up;
 
         _controller.CoolDown();
+        _controller.Shoot();
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -60,16 +60,19 @@ public class Player : MonoBehaviour, IUpdate
         if (Input.GetKey(KeyCode.A))
             _controller.RotateShip(this, 1);
 
-
-
         if (Input.GetKeyUp(KeyCode.D))
         {
             _controller.ResetRotateTimer();
         }
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            _controller.ToggleShooting(true);
+        }
+
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            _controller.Shoot(this);
+            _controller.ToggleShooting(false);
         }
 
     }
@@ -78,5 +81,16 @@ public class Player : MonoBehaviour, IUpdate
     {
         Gizmos.color = Color.green;
         Gizmos.DrawCube(_model.BulletSpawnPoint, Vector3.one / 2);
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            EventManager.TriggerEvent(GenericEvents.GameOver, new Hashtable()
+            { });
+
+            Destroy(this.gameObject);
+        }
     }
 }

@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7658790997438509453}
   - component: {fileID: 8114680876656754793}
-  - component: {fileID: 5818230581995406652}
   - component: {fileID: 225731912291889505}
+  - component: {fileID: 2632819112329496146}
+  - component: {fileID: -1716693953455762450}
   m_Layer: 0
   m_Name: ShipBullet
   m_TagString: Untagged
@@ -86,7 +87,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &5818230581995406652
+--- !u!114 &225731912291889505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7548733957309628095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 644da5835a4167444b924e5292066f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &2632819112329496146
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,15 +125,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.09, y: 0.54}
   m_EdgeRadius: 0
---- !u!114 &225731912291889505
-MonoBehaviour:
+--- !u!50 &-1716693953455762450
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7548733957309628095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 644da5835a4167444b924e5292066f3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

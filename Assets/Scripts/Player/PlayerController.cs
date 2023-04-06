@@ -56,9 +56,14 @@ public class PlayerController
         _model.TimeToRotate = 0;
     }
 
-    public void Shoot(Player player)
+    public void ToggleShooting(bool set)
     {
-        if (_model.ShootCoolDown <= 0)
+        _model.shoot = set;
+    }
+
+    public void Shoot()
+    {
+        if (_model.ShootCoolDown <= 0 && _model.shoot)
         {
             var obj = PoolManager.ShipBulletPool.Spawn();
             _model.ShootCoolDown = _model.stats.shootCooldown;

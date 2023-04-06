@@ -47,6 +47,20 @@ public class ShipBullet : MonoBehaviour, IUpdate
         if (_life < 0)
             PoolManager.ShipBulletPool.Destroy(this.gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("HitEnemy!!!");
+            EventManager.TriggerEvent(GenericEvents.DestroyAsteroid, new Hashtable()
+            {
+                {DataEventHashtableParams.Collider.ToString(), collision }
+            });
+
+            PoolManager.ShipBulletPool.Destroy(this.gameObject);
+        }
+    }
 }
 
 public struct BulletStats

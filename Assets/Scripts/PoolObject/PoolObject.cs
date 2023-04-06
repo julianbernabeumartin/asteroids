@@ -7,6 +7,7 @@ public class PoolObject<T>
 {
     T _prefab;
     List<T> pool = new List<T>();
+    List<T> objInScene = new List<T>();
     Action<T> _startMethod;
     Action<T> _sleepMethod;
     Func<T, T> _factory;
@@ -43,13 +44,14 @@ public class PoolObject<T>
             var obj = pool[0];
             pool.Remove(pool[0]);
             _startMethod(obj);
+            objInScene.Add(obj);
             return obj;
         }
         else
         {
             T newObj = _factory(_prefab);
-            pool.Add(newObj);
             _startMethod(newObj);
+            objInScene.Add(newObj);
             return newObj;
         }
     }
@@ -57,7 +59,19 @@ public class PoolObject<T>
     public void Destroy(T obj)
     {
         _sleepMethod(obj);
+        objInScene.Remove(obj);
         pool.Add(obj);
+    }
+
+    public void DestroyAllObjects()
+    {
+        for (int i = 0; i < objInScene.Count; i++)
+        {
+            _sleepMethod(objInScene[i]);
+            pool.Add(objInScene[i]);
+        }
+
+        objInScene.Clear();
     }
 
 }

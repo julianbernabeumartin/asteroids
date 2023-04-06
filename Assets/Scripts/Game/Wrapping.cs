@@ -9,14 +9,19 @@ public class Wrapping : MonoBehaviour, IUpdate
 
     private Camera _cam;
 
-    SpriteRenderer _renderer;
     Plane[] _cameraFrustum;
-    PolygonCollider2D _collider;
 
+    Collider2D _collider;
 
     void OnDisable()
     {
         UpdateManager.Instance.updates.Remove(this);
+    }
+
+    void OnEnable()
+    {
+        if (UpdateManager.Instance != null)
+            UpdateManager.Instance.updates.Add(this);
     }
 
     void OnDestroy()
@@ -26,20 +31,14 @@ public class Wrapping : MonoBehaviour, IUpdate
 
     void Awake()
     {
-        _renderer = GetComponent<SpriteRenderer>();
-        _collider = GetComponent<PolygonCollider2D>();
-
+        _collider = GetComponent<Collider2D>();
+        _cam = Camera.main;
     }
-
 
     void Start()
     {
         UpdateManager.Instance.updates.Add(this);
-
-        _cam = Camera.main;
     }
-
-
 
     public void IUpdate()
     {
@@ -50,6 +49,7 @@ public class Wrapping : MonoBehaviour, IUpdate
     {
         var bounds = _collider.bounds;
         _cameraFrustum = GeometryUtility.CalculateFrustumPlanes(_cam);
+
 
         if (GeometryUtility.TestPlanesAABB(_cameraFrustum, bounds))
         {
@@ -63,16 +63,19 @@ public class Wrapping : MonoBehaviour, IUpdate
     void Wrap()
     {
         var isVisible = CheckRenderers();
+
         if (isVisible)
         {
             _isWrappingX = false;
             _isWrappingY = false;
             return;
         }
+
         if (_isWrappingX && _isWrappingY)
         {
             return;
         }
+
         var cam = Camera.main;
         var viewportPosition = cam.WorldToViewportPoint(transform.position);
 
@@ -90,8 +93,9 @@ public class Wrapping : MonoBehaviour, IUpdate
             newPosition.y = -newPosition.y;
             _isWrappingY = true;
         }
+
         transform.position = newPosition;
 
-
     }
+
 }
