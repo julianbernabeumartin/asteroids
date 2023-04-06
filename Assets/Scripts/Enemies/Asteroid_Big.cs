@@ -22,5 +22,10 @@ public class Asteroid_Big : Asteroid
             var obj = PoolManager.AstroidSmallPool.Spawn();
             obj.transform.position = transform.position;
         }
+
+        EventManager.TriggerEvent(GenericEvents.UpdateAsteroidsDestroyed, new Hashtable()
+        {{DataEventHashtableParams.Collider.ToString(),_collider}
+        });
+
     }
 }

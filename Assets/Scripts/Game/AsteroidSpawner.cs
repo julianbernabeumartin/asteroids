@@ -8,6 +8,8 @@ public class AsteroidSpawner : MonoBehaviour, IEventListener
     int _spawnTime;
     [SerializeField]
     int _limitAsteroidsOnScreen;
+    [SerializeField]
+    float _closeDistanceSpawn;
 
     float _timer;
 
@@ -16,10 +18,11 @@ public class AsteroidSpawner : MonoBehaviour, IEventListener
 
     Camera _cam;
 
-
+    Player _player;
 
     private void Awake()
     {
+        _player = FindAnyObjectByType<Player>();
         _cam = Camera.main;
         SetLimits();
     }
@@ -36,15 +39,31 @@ public class AsteroidSpawner : MonoBehaviour, IEventListener
 
     }
 
-
-
     public void SpawnAsteroid(Hashtable data)
     {
         List<GameObject> asteroids = (List<GameObject>)data[DataEventHashtableParams.asteroids.ToString()];
+        if (_player == null) return;
 
+        var spawnPos = ValidSpawnPoint();
         var obj = PoolManager.AstroidBigPool.Spawn();
-        obj.transform.position = new Vector3(UnityEngine.Random.Range(-_right.x, _right.x), UnityEngine.Random.Range(-_top.y, _top.y), 0);
+        //obj.transform.position = new Vector3(UnityEngine.Random.Range(-_right.x, _right.x), UnityEngine.Random.Range(-_top.y, _top.y), 0);
+        obj.transform.position = spawnPos;
         asteroids.Add(obj);
+    }
+
+    Vector3 ValidSpawnPoint()
+    {
+        Vector3 tempPos = new Vector3(UnityEngine.Random.Range(-_right.x, _right.x), UnityEngine.Random.Range(-_top.y, _top.y), 0);
+
+        Vector3 offset = _player.transform.position - tempPos;
+        float sqrLen = offset.sqrMagnitude;
+
+        if (sqrLen < _closeDistanceSpawn * _closeDistanceSpawn)
+        {
+            tempPos = ValidSpawnPoint();
+        }
+
+        return tempPos;
     }
 
     void OnDrawGizmos()

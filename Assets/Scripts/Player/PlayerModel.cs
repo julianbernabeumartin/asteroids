@@ -12,11 +12,13 @@ public class PlayerModel
     float _shootCoolDown = 0;
     Vector3 _bulletSpawnPoint;
 
+    int _currentScore;
 
     public float TimeToRotate { get => _timeToRotate; set => _timeToRotate = value; }
     public float Rotation { get => _rotation; set => _rotation = value; }
     public Vector3 BulletSpawnPoint { get => _bulletSpawnPoint; set => _bulletSpawnPoint = value; }
     public float ShootCoolDown { get => _shootCoolDown; set => _shootCoolDown = value; }
+    public int CurrentScore { get => _currentScore; set => _currentScore = value; }
 }
 
 public struct ModelStats

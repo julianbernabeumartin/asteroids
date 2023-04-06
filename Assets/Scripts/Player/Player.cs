@@ -34,10 +34,10 @@ public class Player : MonoBehaviour, IUpdate
 
         _model.stats = new ModelStats
         {
-            speed = 0.1f,
+            speed = 0.2f,
             turnSpeed = 100f,
             rotationAngle = 1f,
-            maxSpeed = 2f,
+            maxSpeed = 2.5f,
             shootCooldown = 0.3f
         };
 

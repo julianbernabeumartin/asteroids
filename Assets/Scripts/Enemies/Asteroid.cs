@@ -8,7 +8,7 @@ public abstract class Asteroid : MonoBehaviour, IUpdate, IEventListener
     Stats _stats;
     Vector3 _dir;
     Vector3 _aim;
-    Collider2D _collider;
+    protected Collider2D _collider;
     public Stats Stats { get => _stats; set => _stats = value; }
 
     void OnEnable()
@@ -57,6 +57,7 @@ public abstract class Asteroid : MonoBehaviour, IUpdate, IEventListener
         {
             PoolManager.AstroidBigPool.Destroy(this.gameObject);
             OnDestroyCall();
+
 
         }
     }

@@ -4,4 +4,5 @@
     DestroyAsteroid,
     SpawnAsteroid,
     GameOver,
+    UpdateAsteroidsDestroyed
 }
