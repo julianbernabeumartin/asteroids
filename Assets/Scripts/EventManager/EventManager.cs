@@ -5,10 +5,12 @@ using System;
 
 public class EventManager : MonoBehaviour
 {
+    //Eventmanager class, which i use to call events in game
+
     private Dictionary<GenericEvents, Action<Hashtable>> eventsGenericDictionary;
 
     private static EventManager eventManager;
-    
+
     public static EventManager Instance
     {
         get
@@ -19,11 +21,7 @@ public class EventManager : MonoBehaviour
                 if (eventManager)
                     DontDestroyOnLoad(eventManager.gameObject);
 
-                if (!eventManager)
-                {
-                    //Debug.LogError("Necesitas tener el script EventManger.sc en un GameObject dentro de la scena.");
-                }
-                else
+                if (eventManager)
                 {
                     eventManager.Init();
                 }

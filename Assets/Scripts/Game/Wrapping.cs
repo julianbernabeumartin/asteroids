@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Wrapping : MonoBehaviour, IUpdate
 {
+
+    #region VARIABLES
     bool _isWrappingX = false;
     bool _isWrappingY = false;
 
@@ -12,7 +14,10 @@ public class Wrapping : MonoBehaviour, IUpdate
     Plane[] _cameraFrustum;
 
     Collider2D _collider;
+    #endregion
 
+
+    #region MONOBEHAVIOUR METHODS
     void OnDisable()
     {
         UpdateManager.Instance.updates.Remove(this);
@@ -39,12 +44,9 @@ public class Wrapping : MonoBehaviour, IUpdate
     {
         UpdateManager.Instance.updates.Add(this);
     }
+    #endregion
 
-    public void IUpdate()
-    {
-        Wrap();
-    }
-
+    #region CLASS METHODS
     bool CheckRenderers()
     {
         var bounds = _collider.bounds;
@@ -97,5 +99,22 @@ public class Wrapping : MonoBehaviour, IUpdate
         transform.position = newPosition;
 
     }
+    #endregion
+
+    #region INHERITED METHODS
+    public void IUpdate()
+    {
+        Wrap();
+    }
+
+    #endregion
+
+
+
+
+
+
+
+
 
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShipBullet : MonoBehaviour, IUpdate
 {
+    // in this class, we move the ship bullets when we spammed them.
+
     Player _player;
     BulletStats _stats;
 
@@ -52,10 +54,11 @@ public class ShipBullet : MonoBehaviour, IUpdate
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("HitEnemy!!!");
+
             EventManager.TriggerEvent(GenericEvents.DestroyAsteroid, new Hashtable()
             {
-                {DataEventHashtableParams.Collider.ToString(), collision }
+                { DataEventHashtableParams.Collider.ToString(), collision },
+                { GameplayEventHashtableParams.Player.ToString(), _player }
             });
 
             PoolManager.ShipBulletPool.Destroy(this.gameObject);

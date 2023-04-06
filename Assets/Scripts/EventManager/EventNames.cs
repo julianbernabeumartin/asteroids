@@ -4,5 +4,6 @@
     DestroyAsteroid,
     SpawnAsteroid,
     GameOver,
-    UpdateAsteroidsDestroyed
+    UpdateAsteroidsDestroyed,
+    UpdateUIScore
 }

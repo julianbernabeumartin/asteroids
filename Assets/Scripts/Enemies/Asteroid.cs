@@ -53,11 +53,14 @@ public abstract class Asteroid : MonoBehaviour, IUpdate, IEventListener
     public virtual void OnDestroyAsteroid(Hashtable data)
     {
         Collider2D collider = (Collider2D)data[DataEventHashtableParams.Collider.ToString()];
+        Player player = (Player)data[GameplayEventHashtableParams.Player.ToString()];
+
         if (collider == _collider)
         {
             PoolManager.AstroidBigPool.Destroy(this.gameObject);
             OnDestroyCall();
 
+            player.Model.CurrentScore += _stats.value;
 
         }
     }

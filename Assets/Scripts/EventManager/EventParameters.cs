@@ -1,6 +1,6 @@
 ﻿public enum GameplayEventHashtableParams
 {
-
+    Player
 }
 
 public enum DataEventHashtableParams
@@ -11,7 +11,7 @@ public enum DataEventHashtableParams
 
 public enum UIEventHastableParams
 {
-
+    Score
 
 }
 

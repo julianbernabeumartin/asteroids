@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour, IEventListener
 {
+    // class used to spawn asteroids in the level
+
+    #region VARIABLES
     [SerializeField]
     int _spawnTime;
     [SerializeField]
@@ -19,7 +22,9 @@ public class AsteroidSpawner : MonoBehaviour, IEventListener
     Camera _cam;
 
     Player _player;
+    #endregion
 
+    #region MONOBEHAVIOUR METHODS
     private void Awake()
     {
         _player = FindAnyObjectByType<Player>();
@@ -32,6 +37,16 @@ public class AsteroidSpawner : MonoBehaviour, IEventListener
         OnEnableEventListenerSubscriptions();
     }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(_top, Vector3.one / 2);
+        Gizmos.DrawWireCube(_right, Vector3.one / 2);
+
+    }
+    #endregion
+
+    #region CLASS METHODS
     void SetLimits()
     {
         _top = (Vector2)_cam.ScreenToWorldPoint(new Vector3(_cam.pixelWidth / 2, _cam.pixelHeight, _cam.nearClipPlane));
@@ -66,14 +81,6 @@ public class AsteroidSpawner : MonoBehaviour, IEventListener
         return tempPos;
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(_top, Vector3.one / 2);
-        Gizmos.DrawWireCube(_right, Vector3.one / 2);
-
-    }
-
     public void OnEnableEventListenerSubscriptions()
     {
         EventManager.StartListening(GenericEvents.SpawnAsteroid, SpawnAsteroid);
@@ -83,4 +90,8 @@ public class AsteroidSpawner : MonoBehaviour, IEventListener
     {
         EventManager.StopListening(GenericEvents.SpawnAsteroid, SpawnAsteroid);
     }
+    #endregion
+
+
+
 }

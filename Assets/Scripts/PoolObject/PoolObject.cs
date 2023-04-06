@@ -5,6 +5,8 @@ using System;
 
 public class PoolObject<T>
 {
+    //I use poolobject to spam the bullets and the asteroids
+
     T _prefab;
     List<T> pool = new List<T>();
     List<T> objInScene = new List<T>();

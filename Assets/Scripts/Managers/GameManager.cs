@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, IUpdate, IEventListener
 {
+    #region VARIABLES
     [SerializeField]
     int _spawnTime;
     [SerializeField]
@@ -30,7 +31,9 @@ public class GameManager : MonoBehaviour, IUpdate, IEventListener
 
     [SerializeField]
     Player _playerPrefab;
+    #endregion
 
+    #region PROPERTIES
     public int BigAsteroidsDestroyed
     {
         get => _bigAsteroidsDestroyed;
@@ -52,8 +55,9 @@ public class GameManager : MonoBehaviour, IUpdate, IEventListener
             }
         }
     }
+    #endregion
 
-
+    #region MONOBEHAVIOUR METHODS
 
     void OnDisable()
     {
@@ -72,17 +76,29 @@ public class GameManager : MonoBehaviour, IUpdate, IEventListener
         OnEnableEventListenerSubscriptions();
 
     }
+    #endregion
 
-    private void SetValues()
+    #region CLASS METHODS
+    public void UpdateAsteroidsDestroyed(Hashtable data)
     {
-        _spawnTime = 1;
-        _numAsteroidsPerLevel = 2;
-        _currLevel = 1;
-        _maxLevel = 10;
-        _bigAsteroidsDestroyed = 0;
-        _numberAsteroidsGoal = _numAsteroidsPerLevel;
-        _timer = 0;
+        Collider2D asteroid = (Collider2D)data[DataEventHashtableParams.Collider.ToString()];
+        _asteroids.Remove(asteroid.gameObject);
+        BigAsteroidsDestroyed++;
     }
+
+    public void GameOver(Hashtable data)
+    {
+        var obj = Instantiate(_gameOverScreen, _canvas.transform);
+        StartCoroutine(RestartGame());
+    }
+
+    public IEnumerator RestartGame()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+    #endregion
+
 
     public void IUpdate()
     {
@@ -103,24 +119,7 @@ public class GameManager : MonoBehaviour, IUpdate, IEventListener
         }
     }
 
-    public void UpdateAsteroidsDestroyed(Hashtable data)
-    {
-        Collider2D asteroid = (Collider2D)data[DataEventHashtableParams.Collider.ToString()];
-        _asteroids.Remove(asteroid.gameObject);
-        BigAsteroidsDestroyed++;
-    }
 
-    public void GameOver(Hashtable data)
-    {
-        var obj = Instantiate(_gameOverScreen, _canvas.transform);
-        StartCoroutine(RestartGame());
-    }
-
-    public IEnumerator RestartGame()
-    {
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
-    }
 
     public void OnEnableEventListenerSubscriptions()
     {
